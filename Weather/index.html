@@ -94,20 +94,3 @@ function getWeather() {
 </script>
 </body>
 </html>
-
-<!--  xmlhttp.onreadystatechange = function() {
-    var fullResponse;
-    if (xmlhttp.readyState==4 && xmlhttp.status==200){
-      var jsonObj = JSON.parse(xmlhttp.responseText);
-      var weatherInput = "";
-      var iconUrl = "http://openweathermap.org/img/w/"+jsonObj.weather[0].icon+".png";
-      weatherInput += "<tr><td>City</td><td>"+jsonObj.name+"</td></tr>"
-      weatherInput += "<tr><td>°C</td><td>"+jsonObj.main.temp+"</td></tr>"
-      weatherInput += "<tr><td>Weather</td><td>"+jsonObj.weather[0].description+"</td></tr>"
-      weatherInput += "<tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr><tr>"
-      weatherInput += "<tr><td>Max / Min °C</td><td>"+jsonObj.main.temp_max+"°C / " + jsonObj.main.temp_min + "°C" + "</td></tr>"
-      weatherInput += "<tr><img src="+iconUrl+"></tr>";
-      document.getElementById("wDisplay").innerHTML = weatherInput;
-    }
-  }
-}-->
