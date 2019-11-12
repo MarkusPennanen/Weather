@@ -20,13 +20,47 @@
 
 
 <script>
-document.getElementById("errortxt").style.display = "none";
+document.getElementById("errortxt").style.display = "none"; //Hide errortext by default
 function hideError() {
-  document.getElementById("errortxt").style.display = "none";
+  document.getElementById("errortxt").style.display = "none"; //Function for hiding errortext
 }
-function defaultWeather() {
-  var url = "https://api.openweathermap.org/data/2.5/weather?q=helsinki&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093";
-  var xmlhttp = new XMLHttpRequest();
+function defaultWeather() { //Function for default weather on page load
+  var url = "https://api.openweathermap.org/data/2.5/weather?q=helsinki&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093"; //Set target api address on variable
+  var xmlhttp = new XMLHttpRequest(); //Set xml request on variable
+  xmlhttp.open("GET",url, true); //Set request to get data from url address
+  xmlhttp.send(); //Send request
+  xmlhttp.onreadystatechange = function() { //When respond is received
+    var fullResponse; //Set received response data on variable
+    if (xmlhttp.readyState==4 && xmlhttp.status==200){ //If data was successfully received
+      var jsonObj = JSON.parse(xmlhttp.responseText); //Parse data into JSON form
+      var weatherInput = ""; //Set new variable for text data
+      var iconUrl = "http://openweathermap.org/img/w/"+jsonObj.weather[0].icon+".png"; //Set correct icon name parsed from the current weather and set onto url of the icon providing address
+      weatherInput += "<h4>"+jsonObj.name+"</h4>" //Parse weather station name and set it on a header
+      weatherInput += "<h4>"+jsonObj.main.temp+ "°C" + "</h4>" //Parse temperature and set it on a header
+      weatherInput += "<h5>"+jsonObj.weather[0].description+"</h5>" //Parse weather description and set it on a header
+      weatherInput += "<h5>"+jsonObj.main.temp_max+"°C / " + jsonObj.main.temp_min + "°C" + "</h5>" //Parse max and min temperature and set it on a header
+      weatherInput += "<h5>Humidity  "+jsonObj.main.humidity+"</h5>" //Parse humidity level and set it on a header
+      weatherInput += "<h6><img src="+iconUrl+"></h6>"; //Set icon url onto image source and set it onto a header
+      document.getElementById("wDisplay").innerHTML = weatherInput; //Push all previous headers onto it's own element
+    }
+  }
+}
+function getWeather() { //Function for getting weather with custom search
+  var citySelect = document.getElementById("searchInpt").value; //Get city name from input element
+  var newcitySelect = ""; //Set new empty variable for new city name
+  for(var i = 0; i<citySelect.length; i++) { //Go through every letter in the city name
+    if (citySelect[i] == 'ä') { //If it has "Ä"
+      newcitySelect += 'a'; //Change it to "A" on the newcitySelect string
+    }
+    else if (citySelect[i] == 'ö') { //If it has "Ö"
+      newcitySelect += 'o';  //Change it to "O" on the newcitySelect string
+    }
+    else if (citySelect[i] || 'ä' && citySelect[i] || 'ö'){ //If its neither "Ä" or "Ö"
+      newcitySelect += citySelect[i]; //Set the original letter onto the newcitySelect string
+    }
+  }
+  var url = "https://api.openweathermap.org/data/2.5/weather?q="+newcitySelect+"&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093"; //Set the target address onto a variable, changing the target city with newcitySelect variable
+  var xmlhttp = new XMLHttpRequest(); //Same as above
   xmlhttp.open("GET",url, true);
   xmlhttp.send();
   xmlhttp.onreadystatechange = function() {
@@ -42,44 +76,9 @@ function defaultWeather() {
       weatherInput += "<h5>Humidity  "+jsonObj.main.humidity+"</h5>"
       weatherInput += "<h6><img src="+iconUrl+"></h6>";
       document.getElementById("wDisplay").innerHTML = weatherInput;
-    }
-  }
-}
-function getWeather() {
-  var citySelect = document.getElementById("searchInpt").value;
-  var newcitySelect = "";
-  for(var i = 0; i<citySelect.length; i++) {
-    if (citySelect[i] == 'ä') {
-      newcitySelect += 'a';
-    }
-    else if (citySelect[i] == 'ö') {
-      newcitySelect += 'o';
-    }
-    else if (citySelect[i] || 'ä' && citySelect[i] || 'ö'){
-      newcitySelect += citySelect[i];
-    }
-  }
-  console.log(newcitySelect);
-  var url = "https://api.openweathermap.org/data/2.5/weather?q="+newcitySelect+"&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093";
-  var xmlhttp = new XMLHttpRequest();
-  xmlhttp.open("GET",url, true);
-  xmlhttp.send();
-  xmlhttp.onreadystatechange = function() {
-    var fullResponse;
-    if (xmlhttp.readyState==4 && xmlhttp.status==200){
-      var jsonObj = JSON.parse(xmlhttp.responseText);
-      var weatherInput = "";
-      var iconUrl = "http://openweathermap.org/img/w/"+jsonObj.weather[0].icon+".png";
-      weatherInput += "<h4>"+jsonObj.name+"</h4>"
-      weatherInput += "<h4>"+jsonObj.main.temp+ "°C" + "</h4>"
-      weatherInput += "<h5>"+jsonObj.weather[0].description+"</h5>"
-      weatherInput += "<h5>"+jsonObj.main.temp_max+"°C / " + jsonObj.main.temp_min + "°C" + "</h5>"
-      weatherInput += "<h5>Humidity  "+jsonObj.main.humidity+"</h5>"
-      weatherInput += "<h6><img src="+iconUrl+"></h6>";
-      document.getElementById("wDisplay").innerHTML = weatherInput;
-      document.getElementById("errortxt").style.display = "none";
+      document.getElementById("errortxt").style.display = "none"; //Hide error text if it was displayed from before
     } else {
-      document.getElementById("errortxt").style.display = "block"
+      document.getElementById("errortxt").style.display = "block" //If the data request is not successfull, display error text
     }
   }
 }
