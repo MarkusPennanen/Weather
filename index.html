@@ -25,7 +25,7 @@ function hideError() {
   document.getElementById("errortxt").style.display = "none";
 }
 function defaultWeather() {
-  var url = "http://api.openweathermap.org/data/2.5/weather?q=helsinki&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093";
+  var url = "https://api.openweathermap.org/data/2.5/weather?q=helsinki&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093";
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET",url, true);
   xmlhttp.send();
