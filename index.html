@@ -60,7 +60,7 @@ function getWeather() {
     }
   }
   console.log(newcitySelect);
-  var url = "http://api.openweathermap.org/data/2.5/weather?q="+newcitySelect+"&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093";
+  var url = "https://api.openweathermap.org/data/2.5/weather?q="+newcitySelect+"&units=metric&mode=JSON&APPID=c706afc24bc0b96f37199fe59e85d093";
   var xmlhttp = new XMLHttpRequest();
   xmlhttp.open("GET",url, true);
   xmlhttp.send();
